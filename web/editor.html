@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Piper Push Cache - Flow Editor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="screen,print" href="editor.css" />
+  </head>
+  <body onresize="resizeWork()" style="overflow: hidden">
+    <a name="top"></a>
+    <table class="header">
+      <tr>
+	<td class="name">
+	  <img src="logo.gif" class="logo" height="46" width="59" style="padding-top: 6px">
+	  <a href="http://piperpushcache.com" class="normal">Piper Push Cache</a><span class="normal"> Flow Editor</span></td>
+	<td>&nbsp;</td>
+      </tr>
+    </table>
+    <div class="tools">
+      <img id="openbut" class="tool" src="open.gif" onclick="openFlow()">
+      <img id="savebut" class="tool-off" src="save.gif" onclick="saveFlow()">
+      <img id="snapbut" class="tool-off" src="snap.gif">
+      <img id="ptrbut" class="tool-off" src="pointer.gif">
+      <img id="rectbut" class="tool-off" src="rectangle.gif">
+      <img id="linkbut" class="tool-off" src="link.gif">
+      <img class="sep" src="div.jpg">
+      <span class="ftitle" id="titlelabel">Title:</span>
+      <input id="flowname" class="flowname" type="text" value="" disabled="true"/>
+    </div>
+
+    <div id="work" class="work">
+      <div id="flist" class="flowlist">
+	<div class="flowhead">Loaded Flows</div>
+	<div id="fshell" class="flowshell">
+	</div>
+      </div>
+      <div id="dshell" class="diagram" onscroll="resizeWork()">
+	<canvas id="diagram" class="diagramcanvas" width="1000" height="1000"></canvas>
+      </div>
+      <canvas id="vrule" class="vruler" width="16" height="500"></canvas>
+      <canvas id="hrule" class="hruler" width="500" height="16"></canvas>
+      <div id="props" class="props">
+	<div id="task_props" class="opt">
+	  <span class="proplabel">Name</span>
+	  <input id="propname" class="proptext" type="text" value=""/>
+	  <span class="proplabel">Actor</span>
+	  <select class="propselect" name="actor" id="actor">
+	    <option value="" selected> </option>
+	    <option value="async">Async</option>
+	    <option value="cache">Cache</option>
+	    <option value="chglog">Chglog</option>
+	    <option value="http" disabled>Http</option>
+	    <option value="join">Join</option>
+	    <option value="nats_publish">Nats Publish</option>
+	    <option value="remote">Remote</option>
+	    <option value="spawn">Spawn</option>
+	    <option value="split">Split</option>
+	    <option value="switch">Switch</option>
+	    <option value="transform" disabled>Transform</option>
+	  </select>
+	  <table class="proptable">
+	    <tr>
+	      <td class="proptable">
+		<span class="propleftlabel">Top</span>
+		<input id="top" class="propnum" type="text" value=""/>
+	      </td>
+	      <td class="proptable">
+		<span class="propleftlabel">Left</span>
+		<input id="left" class="propnum" type="text" value=""/>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="proptable">
+		<span class="propleftlabel">Height</span>
+		<input id="height" class="propnum" type="text" value=""/>
+	      </td>
+	      <td class="proptable">
+		<span class="propleftlabel">Width</span>
+		<input id="width" class="propnum" type="text" value=""/>
+	      </td>
+	    </tr>
+	  </table>
+	  <span class="propleftlabel">Color</span>
+	  <input id="color"class="propnum" style="width:120px" type="color" value=""/>
+
+	  <span class="propleftlabel">Trace</span>
+	  <input id="trace" type="checkbox" value=""/>
+
+	  <div id="subject_prop" class="opt">
+	    <span class="proplabel">Subject</span>
+	    <input id="subject" class="proptext" type="text" value=""/>
+	  </div>
+	  <div id="count_prop" class="opt">
+	    <span class="proplabel">Count</span>
+	    <input id="count" class="proptext" type="text" value=""/>
+	  </div>
+	  <div id="box_prop" class="opt">
+	    <span class="proplabel">Box Resolve</span>
+	    <select class="propselect" name="box_resolve" id="box_resolve">
+	      <option value="merge" selected>Merge</option>
+	      <option value="first">First</option>
+	      <option value="last">Last</option>
+	      <option value="all">All</option>
+	    </select>
+	  </div>
+	  <div id="srules_prop" class="opt">
+	    <span class="proplabel">Rules</span>
+	    <textarea id="srules" class="proptext" rows="6"></textarea>
+	  </div>
+	  <div id="path_prop" class="opt">
+	    <span class="proplabel">Path</span>
+	    <input id="path" class="proptext" type="text" value=""/>
+	  </div>
+	  <div id="args_prop" class="opt">
+	    <span class="proplabel">Command Line Arguments</span>
+	    <textarea id="args" class="proptext"></textarea>
+	  </div>
+	  <div id="timeout_prop" class="opt">
+	    <span class="proplabel">Timeout (seconds)</span>
+	    <input id="timeout" class="proptext" type="text" value=""/>
+	  </div>
+	  <div id="addr_prop" class="opt">
+	    <span class="proplabel">IP Address</span>
+	    <input id="addr" class="proptext" type="text" value=""/>
+	  </div>
+	  <div id="method_prop" class="opt">
+	    <span class="proplabel">Method</span>
+	    <select class="propselect" name="method" id="method">
+	      <option value="post" selected>POST</option>
+	      <option value="put">PUT</option>
+	    </select>
+	  </div>
+	  <div id="initial_prop" class="opt">
+	    <span class="proplabel">Initial JSON</span>
+	    <textarea id="initial" class="proptext" rows="6"></textarea>
+	  </div>
+	  <div id="xrules_prop" class="opt">
+	    <span class="proplabel">Rules</span>
+	    <textarea id="xrules" class="proptext" rows="6"></textarea>
+	  </div>
+	  <div class="removediv">
+	    <input id="removetask" class="removebutton" type="button" value="Remove"/>
+	  </div>
+	</div>
+	<div id="link_props" class="opt">
+	  <span class="proplabel">Label</span>
+	  <input id="linkname" class="proptext" type="text" value=""/>
+	  <span class="proplabel">Path</span>
+	  <textarea id="linkpath" class="proptext" rows="4"></textarea>
+	  <span class="proplabel">Target</span>
+	  <input id="target" class="proptext" type="text" value=""/>
+	  <div class="removediv">
+	    <input id="removelink" class="removebutton" type="button" value="Remove"/>
+	  </div>
+	</div>
+      </div>
+      <div id="foot" class="footer">
+	<img class="showhide" src="showhide.gif" onclick="showhide()">
+	&nbsp;
+	<div class="scaledrop">
+	  <button id="scalebutton" class="dropbutton" onclick="showScale()"><span id="scalevalue">100</span>% <img class="updown" src="updown.gif"></button>
+	  <div id="scales" class="scaleopts">
+	    <div class="scaleitem" onclick="pickScale(10)">10%</div>
+	    <div class="scaleitem" onclick="pickScale(25)">25%</div>
+	    <div class="scaleitem" onclick="pickScale(50)">50%</div>
+	    <div class="scaleitem" onclick="pickScale(100)">100%</div>
+	    <div class="scaleitem" onclick="pickScale(200)">200%</div>
+	  </div>
+	</div>
+	<span id="debug" class="debug"></span>
+	<img class="showhide" style="position:relative;float:right;" src="showhide.gif" onclick="showhideprops()">
+      </div>
+    </div>
+
+    <input type="file" id="opentool" style="display:none" onchange="openInput()" />
+
+    <script type="text/javascript" src="state.js"></script>
+    <script type="text/javascript" src="diagram.js"></script>
+    <script type="text/javascript" src="flowlist.js"></script>
+    <script type="text/javascript" src="props.js"></script>
+    <script type="text/javascript" src="resize.js"></script>
+    <script type="text/javascript" src="ptr.js"></script>
+    <script type="text/javascript" src="rect.js"></script>
+    <script type="text/javascript" src="link.js"></script>
+    <script type="text/javascript" src="editor.js"></script>
+
+  </body>
+</html>
