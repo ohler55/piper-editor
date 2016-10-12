@@ -113,14 +113,8 @@ function updateProps(){
     } else {
 	document.getElementById('task_props').style.display = 'none';
 	document.getElementById('link_props').style.display = 'block';
-	var t2,targ='';
-	if ('string' == typeof selLink) {
-	    t2 = dflow.tasks[selLink];
-	    document.getElementById('linkpath').value = '';
-	} else {
-	    t2 = dflow.tasks[selLink.target];
-	    document.getElementById('linkpath').value = pathToJson(selLink.path);
-	}
+	var targ, t2 = dflow.tasks[selLink.target];
+	document.getElementById('linkpath').value = pathToJson(selLink.path);
 	if (undefined != t2 && null != t2) {
 	    targ = t2.name;
 	}
@@ -443,9 +437,7 @@ function linkpathMod(){
     if (null != selTask && null != selLink) {
 	var s = document.getElementById('linkpath').value;
 	if ('' == s){
-	    if ('string' != typeof selLink) {
-		selLink.path = [];
-	    }
+	    selLink.path = [];
 	    updateDims();
 	    flowChanged();
 	    return;
@@ -460,12 +452,7 @@ function linkpathMod(){
 		    throw 'bad';
 		}
 	    });
-	    if ('string' == typeof selLink) {
-		selLink = {'target':selLink,'path': pts};
-		selTask.links[selLinkName] = selLink;
-	    } else {
-		selLink.path = pts;
-	    }
+	    selLink.path = pts;
 	    updateDims();
 	    flowChanged();
 	} catch (x) {
@@ -478,18 +465,10 @@ function targetMod(){
 	var target = document.getElementById('target').value;
 	var tt = selTask.links[target];
 	if (null == tt) {
-	    if ('string' == typeof selLink) {
-		document.getElementById('target').value = selLink;
-	    } else {
-		document.getElementById('target').value = selLink.target;
-	    }
+	    document.getElementById('target').value = selLink.target;
 	    return;
 	}
-	if ('string' == typeof selLink) {
-	    selTask.links[selLinkName] = target;
-	} else {
-	    selLink.target = target;
-	}
+	selLink.target = target;
 	flowChanged();
     }
 }

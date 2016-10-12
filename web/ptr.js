@@ -53,11 +53,7 @@ function onPath(x, y, path) {
 function linkTarget(t, lk) {
     var targ;
     link = t.links[lk]; 
-    if ('string' == typeof link) {
-	targ = dflow.tasks[link];
-    } else {
-	targ = dflow.tasks[link.target];
-    }
+    targ = dflow.tasks[link.target];
     if (undefined == targ) {
         targ = null;
     }
@@ -72,14 +68,13 @@ function linkPath(t, lk) {
         return [];
     }
     var link = t.links[lk];
-    if ('string' != typeof link && undefined != link.path) {
-	var plen=link.path.length;
-	for (var i=0; i<plen;i++) {
-	    path.push(link.path[i]);
-	}
+    var plen = link.path.length;
+    for (var i = 0; i < plen; i++) {
+	path.push(link.path[i]);
     }
     g = t2.graphic;
     path.push([g.left + g.width/2.0, g.top + g.height/2.0])
+
     return path;
 }
 
@@ -290,39 +285,37 @@ function ptrMouseMove(e) {
     }
     var min = 20, edge;
     var t = selTask;
-    if (null != selLink && 0 < selBut) {
-        if (origX + dx < 0) {
-	    dx = -origX;
-	}
-        if (origY + dy < 0) {
-	    dy = -origY;
-	}
-        if (selLinkPath.length <= selBut) {
-            selBut = selLinkPath.length - 1;
-        }
-        var pt = selLinkPath[selBut];
-        pt[0] = origX + dx;
-        pt[1] = origY + dy;
-	if (snapTo) {
-	    pt[0] = Math.floor((pt[0] + 5) / 10) * 10;
-	    pt[1] = Math.floor((pt[1] + 5) / 10) * 10;
-	}
-        if (selLinkPath.length - 1 == selBut) {
-            var nt = pointTask(pt[0], pt[1]);
-            if (null != nt) {
-                var targ = linkTarget(t, selLinkName);
-                if (nt != targ) {
-                    if ('string' == typeof selLink) {
-                        t.links[selLinkName] = nt.name;
-                    } else {
+    if (null != selLink) {
+        if (0 < selBut) {
+            if (origX + dx < 0) {
+	        dx = -origX;
+	    }
+            if (origY + dy < 0) {
+	        dy = -origY;
+	    }
+            if (selLinkPath.length <= selBut) {
+                selBut = selLinkPath.length - 1;
+            }
+            var pt = selLinkPath[selBut];
+            pt[0] = origX + dx;
+            pt[1] = origY + dy;
+	    if (snapTo) {
+	        pt[0] = Math.floor((pt[0] + 5) / 10) * 10;
+	        pt[1] = Math.floor((pt[1] + 5) / 10) * 10;
+	    }
+            if (selLinkPath.length - 1 == selBut) {
+                var nt = pointTask(pt[0], pt[1]);
+                if (null != nt) {
+                    var targ = linkTarget(t, selLinkName);
+                    if (nt != targ) {
                         selLink.target = nt.name;
                     }
                 }
             }
+            updateProps();
+            updateDims();
+            flowChanged();
         }
-        updateProps();
-        updateDims();
-        flowChanged();
 	return;
     }
     switch (0x0f & selBut) {
@@ -406,12 +399,7 @@ function ptrDblClick(e) {
 	}
         if (0 <= (pos = onPath(x, y, path))) {
             selLinkPath.splice(pos + 1, 0, [x, y]);
-            if ('string' == typeof selLink) {
-                selLink = {'target': selLink, 'path':[selLinkPath[1]]};
-                selTask.links[selLinkName] = selLink;
-            } else {
-                link.path = selLinkPath.slice(1, selLinkPath.length - 1);
-            }
+            link.path = selLinkPath.slice(1, selLinkPath.length - 1);
             updateProps();
             updateDims();
             flowChanged();

@@ -93,7 +93,7 @@ function drawTask(t, ctx, entry) {
     ctx.fillStyle='#808080';
     var y = g.top + 35;
     ctx.font='100 14px Arial';
-    Object.keys(t).forEach(function(ak,j){
+    Object.keys(t).forEach(function(ak,j) {
 	if ('links' == ak || 'graphic' == ak || 'name' == ak) {
 	    return;
 	}
@@ -179,11 +179,7 @@ function drawDiagram() {
 	g = t.graphic;
 	Object.keys(links).forEach(function(lk,j) {
 	    link = links[lk];
-	    if ('string' == typeof link) {
-		t2 = tasks[link];
-	    } else {
-		t2 = tasks[link.target];
-	    }
+	    t2 = tasks[link.target];
 	    if (undefined == t2) {
 		return;
 	    }
@@ -332,29 +328,7 @@ function pickScale(s) {
 	menu.classList.remove('show');
     }
 }
-function setFlow(s,fn) {
-    try {
-	j = JSON.parse(s);
-    } catch (e) {
-	alert(e);
-	return;
-    }
-    if (!j.id) {
-	var i = fn.lastIndexOf('.flow');
-
-	if (0 < i) {
-	    fn = fn.substr(0, i);
-	} else {
-	    i = fn.lastIndexOf('.json');
-	    if (0 < i) {
-		fn = fn.substr(0, i);
-	    }
-	}
-	j.id = fn;
-    }
-    setJsonFlow(j);
-}
-function updateDims(){
+function updateDims() {
     if (null == dflow) {
 	dwidth = 1000
 	dheight = 1000
@@ -424,22 +398,8 @@ function updateDims(){
     dheight = Math.floor((dheight + 120) / 100) * 100;
     resizeWork();
 }
-function setJsonFlow(flow){
-    dflow = flow;
-    dflow.changed = false;
-    document.getElementById('flowname').value = dflow.id;
-    unSelect();
-    updateProps();
-    updateDims();
-    document.getElementById('flowname').disabled = false;
-    document.getElementById('savebut').className = 'tool';
-    document.getElementById('snapbut').className = (snapTo ? 'tool-down' : 'tool');
-    document.getElementById('ptrbut').className = 'tool-down';
-    document.getElementById('rectbut').className = 'tool';
-    document.getElementById('linkbut').className = 'tool';
-    document.getElementById("titlelabel").innerHTML = "Title:";
-}
-function flownameMod(){
+
+function flownameMod() {
     var e = document.getElementById('flowname');
     if (null == dflow || e.value === dflow.id) {
 	return;
@@ -476,7 +436,7 @@ function saveFlow() {
     document.getElementById('savebut').className = 'tool-down';
     document.getElementById('savebut').className = 'tool';
 }
-function snapTog(){
+function snapTog() {
     var e = document.getElementById('snapbut');
 
     if ('tool' === e.className) {
@@ -487,7 +447,7 @@ function snapTog(){
     e.className = (snapTo ? 'tool-down' : 'tool');
 }
 var tools = ['ptr','rect','link'];
-function toolPick(tool){
+function toolPick(tool) {
     if ('tool-off' === document.getElementById(tool + 'but').className) {
 	return;
     }
@@ -511,6 +471,6 @@ function toolPick(tool){
 document.getElementById('flowname').value = '';
 document.getElementById('flowname').onchange = flownameMod;
 document.getElementById('snapbut').onclick = snapTog;
-document.getElementById('ptrbut').onclick = function(){toolPick('ptr');}
-document.getElementById('rectbut').onclick = function(){toolPick('rect');}
-document.getElementById('linkbut').onclick = function(){toolPick('link');}
+document.getElementById('ptrbut').onclick = function() {toolPick('ptr');}
+document.getElementById('rectbut').onclick = function() {toolPick('rect');}
+document.getElementById('linkbut').onclick = function() {toolPick('link');}

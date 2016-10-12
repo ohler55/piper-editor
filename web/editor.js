@@ -1,6 +1,63 @@
 // Copyright 2016 by Peter Ohler, All Rights Reserved
 // contact: peter@ohler.com
 
+function setFlow(s,fn) {
+    try {
+	j = JSON.parse(s);
+    } catch (e) {
+	alert(e);
+	return;
+    }
+    if (!j.id) {
+	var i = fn.lastIndexOf('.flow');
+
+	if (0 < i) {
+	    fn = fn.substr(0, i);
+	} else {
+	    i = fn.lastIndexOf('.json');
+	    if (0 < i) {
+		fn = fn.substr(0, i);
+	    }
+	}
+	j.id = fn;
+    }
+    setJsonFlow(j);
+}
+
+function setJsonFlow(flow) {
+    if (null != flow) {
+	if (undefined == flow.tasks || null == flow.tasks) {
+            flow.tasks = {};
+	}
+        Object.keys(flow.tasks).forEach(function(k) {
+	    var t = flow.tasks[k];
+	    if (undefined == t.links || null == t.links) {
+                t.links = {};
+	        return;
+	    }
+	    Object.keys(t.links).forEach(function(lk) {
+                var link = t.links[lk];
+                if ('string' == typeof link) {
+                    t.links[lk] = {'target': link, 'path': []};
+                }
+            });
+        });
+    }
+    dflow = flow;
+    dflow.changed = false;
+    document.getElementById('flowname').value = dflow.id;
+    unSelect();
+    updateProps();
+    updateDims();
+    document.getElementById('flowname').disabled = false;
+    document.getElementById('savebut').className = 'tool';
+    document.getElementById('snapbut').className = (snapTo ? 'tool-down' : 'tool');
+    document.getElementById('ptrbut').className = 'tool-down';
+    document.getElementById('rectbut').className = 'tool';
+    document.getElementById('linkbut').className = 'tool';
+    document.getElementById("titlelabel").innerHTML = "Title:";
+}
+
 function fixEvent(e) {
     if (!e) {
 	e = window.event;
