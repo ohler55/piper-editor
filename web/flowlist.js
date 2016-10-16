@@ -11,7 +11,10 @@ function getFlows() {
 	} else {
 	    loadedFlows = [];
 	}
+        document.getElementById("flist").style.width = 200;
+        document.getElementById('showhide_flist').className = 'showhide';
 	drawFlowList();
+        resizeWork();
     };
     h.open("GET", "/flow", true);
     h.send();

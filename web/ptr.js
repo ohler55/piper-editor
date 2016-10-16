@@ -10,42 +10,42 @@ function onPath(x, y, path) {
     for (var i = 1;i < plen; i++) {
 	x1 = path[i][0];
 	y1 = path[i][1];
-	dx = x-x0;
-	dy = y-y0;
+	dx = x - x0;
+	dy = y - y0;
 	if (x0 == x1) {
-	    if (-2<=dx && dx<=2) {
-		if ((y0<=y1 && y0<=y && y<=y1) ||
-		    (y1<y0 && y1<=y && y<=y0)) {
+	    if (-2 <= dx && dx <= 2) {
+		if ((y0 <= y1 && y0 <= y && y <= y1) ||
+		    (y1 < y0 && y1 <= y && y <= y0)) {
 		    return i - 1;
 		}
 	    }
 	} else if (y0 == y1) {
-	    if (-2<=dy && dy<=2) {
-		if ((x0<=x1 && x0<=x && x<=x1) ||
-		    (x1<x0 && x1<=x && x<=x0)) {
+	    if (-2 <= dy && dy <= 2) {
+		if ((x0 <= x1 && x0 <= x && x <= x1) ||
+		    (x1 < x0 && x1 <= x && x <= x0)) {
 		    return i - 1;
 		}
 	    }
 	} else {
-	    var dx01=x0-x1;
-	    var dy01=y0-y1;
-	    var ax=dx01,ay=dy01;
-	    if (ax<0) {ax=-ax;}
-	    if (ay<0) {ay=-ay;}
-	    if (ax>ay) {
-		var yt=y0+dy01/dx01*dx;
-		if (yt-2<=y && y<=yt+2) {
+	    var dx01 = x0 - x1;
+	    var dy01 = y0 - y1;
+	    var ax = dx01, ay = dy01;
+	    if (ax < 0) { ax =- ax; }
+	    if (ay < 0) { ay =- ay; }
+	    if (ax > ay) {
+		var yt = y0 + dy01 / dx01 * dx;
+		if (yt - 2 <= y && y <= yt + 2) {
 		    return i - 1;
 		}
 	    } else {
-		var xt=x0+dx01/dy01*dy;
-		if (xt-2<=x && x<=xt+2) {
+		var xt = x0 + dx01 / dy01 * dy;
+		if (xt - 2 <= x && x <= xt + 2) {
 		    return i - 1;
 		}
 	    }
 	}
-	x0=x1;
-	y0=y1;
+	x0 = x1;
+	y0 = y1;
     }
     return -1;
 }
@@ -55,17 +55,17 @@ function linkTarget(t, lk) {
     link = t.links[lk]; 
     targ = dflow.tasks[link.target];
     if (undefined == targ) {
-        targ = null;
+	targ = null;
     }
     return targ;
 }
 
 function linkPath(t, lk) {
     var g = t.graphic;
-    var path = [[g.left + g.width/2.0,g.top + g.height/2.0]];
+    var path = [[g.left + g.width / 2.0, g.top + g.height / 2.0]];
     var t2;
     if (null == (t2 = linkTarget(t, lk))) {
-        return [];
+	return [];
     }
     var link = t.links[lk];
     var plen = link.path.length;
@@ -73,30 +73,30 @@ function linkPath(t, lk) {
 	path.push(link.path[i]);
     }
     g = t2.graphic;
-    path.push([g.left + g.width/2.0, g.top + g.height/2.0])
+    path.push([g.left + g.width / 2.0, g.top + g.height / 2.0])
 
     return path;
 }
 
 function pointTask(x, y) {
     if (undefined != dflow && null != dflow) {
-        var k, t, tasks = dflow.tasks;
-        for (k in tasks) {
+	var k, t, tasks = dflow.tasks;
+	for (k in tasks) {
 	    if (tasks.hasOwnProperty(k)) {
-	        t = tasks[k];
-	        g = t.graphic;
-	        if (g.left <= x && x <= g.left + g.width && g.top <= y && y <= g.top + g.height) {
-                    return t;
-	        }
+		t = tasks[k];
+		g = t.graphic;
+		if (g.left <= x && x <= g.left + g.width && g.top <= y && y <= g.top + g.height) {
+		    return t;
+		}
 	    }
-        }
+	}
     }
-    return null;        
+    return null;	
 }
 
 function flowClick(e) {
     var t,g,path;
-    var x = e.layerX/dscale, y = e.layerY/dscale;
+    var x = e.layerX / dscale, y = e.layerY / dscale;
     var tasks = dflow.tasks;
     var redraw = false;
     var found = false;
@@ -106,11 +106,11 @@ function flowClick(e) {
 	selTask = t;
 	selLink = null;
 	selLinkName = '';
-        selLinkPath = [];
+	selLinkPath = [];
 	found = true;
     } else if (null != selTask) {
-        unSelect();
-        redraw = true;
+	unSelect();
+	redraw = true;
     }
     if (!found) {
 	for (var k in tasks) {
@@ -123,14 +123,14 @@ function flowClick(e) {
 		    continue;
 		}
 		for (var lk in t.links) {
-		    path = linkPath(t,lk);
+		    path = linkPath(t, lk);
 		    if (0 <= onPath(x, y, path)) {
 			var link = t.links[lk];
 			redraw = (selTask != t || selLink != link);
 			selTask = t;
 			selLink = link;
 			selLinkName = lk;
-                        selLinkPath = path;
+			selLinkPath = path;
 			found = true;
 			break;
 		    }
@@ -139,7 +139,7 @@ function flowClick(e) {
 	}
     }
     if (!found && null != selTask) {
-        unSelect();
+	unSelect();
 	redraw = true;
     }
     if (redraw) {
@@ -150,32 +150,32 @@ function flowClick(e) {
     
 function linkButtonClick(e) {
     if (0 < selLinkPath.length) {
-        var x = e.layerX/dscale, y = e.layerY/dscale;
-        var path = linkPath(selTask,selLinkName);
-        var i, bs=3, px, py, plen = path.length;
+	var x = e.layerX / dscale, y = e.layerY / dscale;
+	var path = linkPath(selTask, selLinkName);
+	var i, bs=3, px, py, plen = path.length;
 
-        // Don't allow first to be selected as origin can not be moved or
-        // changed.
-        for (i = 1; i < plen; i++) {
-            px = path[i][0];
-            py = path[i][1];
-            if (px - bs <= x && x <= px + bs && py - bs <= y && y <= py + bs) {
-                if (e.shiftKey && i < path.length - 1) {
-                    selLinkPath.splice(i, 1); // path and selLinkPath are the same
-                    selLink.path = selLinkPath.slice(1, selLinkPath.length - 1);
-                    selBut = 0;
-                    origX = 0;
-                    origY = 0;
-	            drawDiagram();
-	            updateProps();
-                } else {
-                    selBut = i;
-                    origX = px;
-                    origY = py;
-                }
-                return true;
-            }
-        }
+	// Don't allow first to be selected as origin can not be moved or
+	// changed.
+	for (i = 1; i < plen; i++) {
+	    px = path[i][0];
+	    py = path[i][1];
+	    if (px - bs <= x && x <= px + bs && py - bs <= y && y <= py + bs) {
+		if (e.shiftKey && i < path.length - 1) {
+		    selLinkPath.splice(i, 1); // path and selLinkPath are the same
+		    selLink.path = selLinkPath.slice(1, selLinkPath.length - 1);
+		    selBut = 0;
+		    origX = 0;
+		    origY = 0;
+		    drawDiagram();
+		    updateProps();
+		} else {
+		    selBut = i;
+		    origX = px;
+		    origY = py;
+		}
+		return true;
+	    }
+	}
     }
     unSelect();
     return false;
@@ -183,7 +183,7 @@ function linkButtonClick(e) {
 
 function taskButtonClick(e, t) {
     var g;
-    var x = e.layerX/dscale, y = e.layerY/dscale;
+    var x = e.layerX / dscale, y = e.layerY / dscale;
     var found = null;
 
     g = t.graphic;
@@ -218,12 +218,12 @@ function ptrMouseDown(e) {
     if (null != selTask) {
 	if (null != selLink) {
 	    if (!linkButtonClick(e)) {
-	        drawDiagram();
-	        updateProps();
+		drawDiagram();
+		updateProps();
 		flowClick(e);
 		if (null != selTask) {
 		    origX = selTask.graphic.left;
-                    origY = selTask.graphic.top;
+		    origY = selTask.graphic.top;
 		}
 	    }
 	    return;
@@ -273,7 +273,7 @@ function ptrMouseDown(e) {
     flowClick(e);
     if (null != selTask) {
 	origX = selTask.graphic.left;
-        origY = selTask.graphic.top;
+	origY = selTask.graphic.top;
     }
 }
 
@@ -286,36 +286,36 @@ function ptrMouseMove(e) {
     var min = 20, edge;
     var t = selTask;
     if (null != selLink) {
-        if (0 < selBut) {
-            if (origX + dx < 0) {
-	        dx = -origX;
+	if (0 < selBut) {
+	    if (origX + dx < 0) {
+		dx = -origX;
 	    }
-            if (origY + dy < 0) {
-	        dy = -origY;
+	    if (origY + dy < 0) {
+		dy = -origY;
 	    }
-            if (selLinkPath.length <= selBut) {
-                selBut = selLinkPath.length - 1;
-            }
-            var pt = selLinkPath[selBut];
-            pt[0] = origX + dx;
-            pt[1] = origY + dy;
+	    if (selLinkPath.length <= selBut) {
+		selBut = selLinkPath.length - 1;
+	    }
+	    var pt = selLinkPath[selBut];
+	    pt[0] = origX + dx;
+	    pt[1] = origY + dy;
 	    if (snapTo) {
-	        pt[0] = Math.floor((pt[0] + 5) / 10) * 10;
-	        pt[1] = Math.floor((pt[1] + 5) / 10) * 10;
+		pt[0] = Math.floor((pt[0] + 5) / 10) * 10;
+		pt[1] = Math.floor((pt[1] + 5) / 10) * 10;
 	    }
-            if (selLinkPath.length - 1 == selBut) {
-                var nt = pointTask(pt[0], pt[1]);
-                if (null != nt) {
-                    var targ = linkTarget(t, selLinkName);
-                    if (nt != targ) {
-                        selLink.target = nt.name;
-                    }
-                }
-            }
-            updateProps();
-            updateDims();
-            flowChanged();
-        }
+	    if (selLinkPath.length - 1 == selBut) {
+		var nt = pointTask(pt[0], pt[1]);
+		if (null != nt) {
+		    var targ = linkTarget(t, selLinkName);
+		    if (nt != targ && (selTask != nt || 2 < selLinkPath.length)) {
+			selLink.target = nt.name;
+		    }
+		}
+	    }
+	    updateProps();
+	    updateDims();
+	    flowChanged();
+	}
 	return;
     }
     switch (0x0f & selBut) {
@@ -391,33 +391,37 @@ function ptrMouseMove(e) {
 
 function ptrDblClick(e) {
     if (null != selTask && null != selLink) {
-        var i, pos, path = linkPath(selTask, selLinkName);
-        var x = e.layerX/dscale, y = e.layerY/dscale;
+	var i, pos, path = linkPath(selTask, selLinkName);
+	var x = e.layerX/dscale, y = e.layerY/dscale;
 	if (snapTo) {
 	    x = Math.floor((x + 5) / 10) * 10;
 	    y = Math.floor((y + 5) / 10) * 10;
 	}
-        if (0 <= (pos = onPath(x, y, path))) {
-            selLinkPath.splice(pos + 1, 0, [x, y]);
-            link.path = selLinkPath.slice(1, selLinkPath.length - 1);
-            updateProps();
-            updateDims();
-            flowChanged();
-        }
+	if (0 <= (pos = onPath(x, y, path))) {
+	    selLinkPath.splice(pos + 1, 0, [x, y]);
+	    link.path = selLinkPath.slice(1, selLinkPath.length - 1);
+	    updateProps();
+	    updateDims();
+	    flowChanged();
+	}
     }
 }
 
 function ptrMouseUp(e) {
     if (null != selLink) {
-        var targ;
-        // set last point to target center
-        if (null != (targ = linkTarget(selTask, selLinkName))) {
-            var i = selLinkPath.length - 1;
-            var g = targ.graphic;
-            selLinkPath[i][0] = g.left + g.width / 2.0;
-            selLinkPath[i][1] = g.top + g.height / 2.0;
+	var targ;
+	// set last point to target center
+	if (null != (targ = linkTarget(selTask, selLinkName))) {
+	    var i = selLinkPath.length - 1;
+	    var g = targ.graphic;
+	    selLinkPath[i][0] = g.left + g.width / 2.0;
+	    selLinkPath[i][1] = g.top + g.height / 2.0;
 	    drawDiagram();
-        }
+	} else if (null == selLink.target) {
+	    delete selTask.links[selLinkName];
+	    unSelect();
+	    updateProps();
+	    drawDiagram();
+	}
     }
 }
-

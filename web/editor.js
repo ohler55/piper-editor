@@ -72,10 +72,6 @@ function fixEvent(e) {
     return e;
 }
 
-function debugEvent(e) {
-    //document.getElementById('debug').textContent = e.type.toString() + ' x: ' + e.layerX + ' y: ' + e.layerY + ' | down X: ' + downX + ' Y: ' + downY;
-}
-
 function flowMouseDown(e) {
     if (null == dflow || undefined == dflow.tasks) {
 	return;
@@ -83,7 +79,6 @@ function flowMouseDown(e) {
     e = fixEvent(e);
     downX = e.layerX;
     downY = e.layerY;
-    debugEvent(e);
     switch (activeTool) {
     case 'ptr':
 	ptrMouseDown(e);
@@ -103,24 +98,12 @@ function flowMouseMove(e) {
 	return;
     }
     e = fixEvent(e);
-    debugEvent(e);
-    switch (activeTool) {
-    case 'ptr':
+    if ('ptr' == activeTool) {
 	ptrMouseMove(e);
-	break;
-    case 'rect':
-	rectMouseMove(e);
-	break;
-    case 'link':
-	linkMouseMove(e);
-	break;
-    default:
-	break;
     }
 }
 function flowMouseUp(e) {
     e = fixEvent(e);
-    debugEvent(e)
     downX = -1;
     downY = -1;
     origX = -1;
@@ -136,7 +119,6 @@ function flowDblClick(e) {
 	return;
     }
     e = fixEvent(e);
-    debugEvent(e);
     ptrDblClick(e);
 }
 
@@ -151,15 +133,37 @@ function flowOut(e) {
     }
 }
 
-function flowKeyDown(e) {
-    e = fixEvent(e);
-    debugEvent(e)
+function openFlow() {
+    document.getElementById('opentool').value = '';
+    document.getElementById('opentool').click();
 }
 
-//document.getElementById('diagram').onclick = flowClick;
+function openInput() {
+    var f = document.getElementById('opentool').files[0];
+
+    if (f) {
+	var r = new FileReader();
+	r.onload = function(e) {
+	    setFlow(e.target.result, f.name);
+	};
+	r.onerror = function(e) {
+	    alert("error reading " + f.name);
+	};
+	r.readAsText(f, 'UTF-8');
+    }
+}
+
+function saveFlow() {
+    document.getElementById('savebut').className = 'tool-down';
+    document.getElementById('savebut').className = 'tool';
+}
+
 document.getElementById('diagram').ondblclick = flowDblClick;
 document.getElementById('diagram').onmousedown = flowMouseDown;
 document.getElementById('diagram').onmousemove = flowMouseMove;
 document.getElementById('diagram').onmouseup = flowMouseUp;
 document.getElementById('diagram').onmouseout = flowOut;
 //document.getElementById('diagram').onkeydown = flowKeyDown;
+
+document.getElementById('openbut').onclick = openFlow;
+document.getElementById('savebut').onclick = saveFlow;

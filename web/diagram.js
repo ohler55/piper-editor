@@ -24,12 +24,12 @@ function drawRulers() {
     ctx.beginPath();
     for (var x = Math.floor(x0 / 10) * 10 + inc; x <= mx; x += inc) {
 	if (0 == x % inc10) {
-	    ctx.moveTo((x-x0) * dscale, 3);
-	    ctx.fillText(x.toString(), (x-x0) * dscale + 2, 8);
+	    ctx.moveTo((x - x0) * dscale, 3);
+	    ctx.fillText(x.toString(), (x - x0) * dscale + 2, 8);
 	} else {
-	    ctx.moveTo((x-x0) * dscale, 12);
+	    ctx.moveTo((x - x0) * dscale, 12);
 	}
-	ctx.lineTo((x-x0) * dscale, h + 1);
+	ctx.lineTo((x - x0) * dscale, h + 1);
     }
     ctx.stroke();
 
@@ -47,18 +47,18 @@ function drawRulers() {
     ctx.beginPath();
     for (var y = Math.floor(y0 / 10) * 10 + inc; y <= mx; y += inc) {
 	if (0 == y % inc10) {
-	    ctx.moveTo(3, (y-y0) * dscale);
+	    ctx.moveTo(3, (y - y0) * dscale);
 	} else {
-	    ctx.moveTo(12, (y-y0) * dscale);
+	    ctx.moveTo(12, (y - y0) * dscale);
 	}
-	ctx.lineTo(w + 1, (y-y0) * dscale);
+	ctx.lineTo(w + 1, (y - y0) * dscale);
     }
     ctx.stroke();
 
     ctx.save();
-    ctx.rotate(-Math.PI / 2);
+    ctx.rotate( - Math.PI / 2);
     for (var y = Math.floor(y0 / 100) * 100 + inc10; y <= mx; y += inc10) {
-	ctx.fillText(y.toString(), 3-(y-y0) * dscale, 8);
+	ctx.fillText(y.toString(), 3 - (y - y0) * dscale, 8);
     }
     ctx.restore();
 }
@@ -89,7 +89,7 @@ function drawTask(t, ctx, entry) {
     ctx.strokeRect(g.left, g.top, g.width, g.height);
     ctx.fillStyle='#000000';
     ctx.font='20px Arial';
-    ctx.fillText(t.name, g.left + (g.width-ctx.measureText(t.name).width) / 2, g.top + 18);
+    ctx.fillText(t.name, g.left + (g.width - ctx.measureText(t.name).width) / 2, g.top + 18);
     ctx.fillStyle='#808080';
     var y = g.top + 35;
     ctx.font='100 14px Arial';
@@ -100,7 +100,7 @@ function drawTask(t, ctx, entry) {
 	ctx.fillText(ak + ": " + t[ak].toString(), g.left + 3, y);
 	y += 16;
     })
-    if (selTask == t) {
+    if (selTask == t) { // task or link selected, draw the buttons
 	var cx = g.left + g.width / 2.0;
 	var cy = g.top + g.height / 2.0;
 	var bid = 1;
@@ -127,6 +127,7 @@ function drawDiagram() {
     var h = d.clientHeight;
     var ctx = d.getContext('2d')
 
+    // draw the grid
     ctx.clearRect(0, 0, w, h);
     ctx.lineJoin='round';
     ctx.scale(dscale,dscale);
@@ -160,11 +161,11 @@ function drawDiagram() {
     ctx.stroke();
 
     if (null == dflow || undefined == dflow.tasks) {
-	ctx.translate(-0.5, -0.5);
+	ctx.translate( - 0.5, -0.5);
 	ctx.scale(1.0 / dscale,1.0 / dscale);
 	return;
     }
-    // links
+    // Links get drawn next so that tasks can be drawn on top of them.
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2.0;
     var t, g, g2, links, t2, p2,pl, path, tasks = dflow.tasks;
@@ -185,9 +186,9 @@ function drawDiagram() {
 	    }
 	    g2 = t2.graphic;
             if (lk == selLinkName && 1 < selLinkPath.length) {
-		p2 = selLinkPath[selLinkPath.length-1];
+		p2 = selLinkPath[selLinkPath.length - 1];
                 if (selBut != selLinkPath.length - 1) {
-	            drawArrow(selLinkPath[selLinkPath.length-2],g2,ctx)
+	            drawArrow(selLinkPath[selLinkPath.length - 2],g2,ctx)
                 }
 	        ctx.beginPath();
                 ctx.moveTo(p2[0], p2[1]);
@@ -206,7 +207,7 @@ function drawDiagram() {
 	        pl = [g.left + g.width / 2, g.top + g.height / 2];
 	        if (undefined != link.path && 0 < link.path.length) {
 		    p2 = link.path[0];
-		    pl = link.path[link.path.length-1];
+		    pl = link.path[link.path.length - 1];
 		    link.path.forEach(function(p,z,a) {
 		        ctx.lineTo(p[0], p[1]);
 		    });
@@ -223,12 +224,13 @@ function drawDiagram() {
 	});
     })
 
-    // tasks
+    // draw the tasks
     ctx.lineWidth = 1.0;
     ctx.shadowColor = '#a0a0a0';
     Object.keys(tasks).forEach(function(k,i) {
 	drawTask(tasks[k], ctx, dflow.entry == k);
     })
+    // Selection indications (buttons) go last.
     if (null != selLink && null != selTask) {
 	var g = selTask.graphic;
 	var cx = g.left + g.width / 2.0;
@@ -236,13 +238,14 @@ function drawDiagram() {
 	var bid = 1;
 	var bs = 3.0 / dscale, bs2 = 6.0 / dscale;
         
+        ctx.lineWidth = 1.0;
 	ctx.beginPath();
 	ctx.fillStyle='#00aaff';
 	ctx.strokeStyle = '#00aaff';
-        var i, p = selLinkPath[selLinkPath.length-1];
+        var i, p = selLinkPath[selLinkPath.length - 1];
 	ctx.moveTo(p[0], p[1]);
 	ctx.fillRect(p[0] - bs, p[1] - bs, bs2, bs2);
-	for (i = selLinkPath.length-2; 0 <= i; i--) {
+	for (i = selLinkPath.length - 2; 0 <= i; i--) {
 	    p = selLinkPath[i];
 	    ctx.lineTo(p[0], p[1]);
             if (0 == i) {
@@ -253,32 +256,33 @@ function drawDiagram() {
         }
 	ctx.stroke();
     }
-    ctx.translate(-0.5, -0.5);
+    ctx.translate( - 0.5, -0.5);
     ctx.scale(1.0 / dscale,1.0 / dscale);
 }
+
 function labelPt(p,g,nw) {
     var cx = g.left + g.width / 2, cy= g.top + g.height / 2;
-    var dx = p[0]-cx, dy = p[1]-cy;
+    var dx = p[0] - cx, dy = p[1] - cy;
     var a = Math.atan2(dy,dx), pi4=Math.PI / 4, po=[0,0];
 
-    if (-pi4 <= a && a < pi4) { // right side
+    if ( - pi4 <= a && a < pi4) { // right side
 	po[0] = g.left + g.width;
-	po[1] = Math.round(cy + dy / dx * (po[0]-cx));
+	po[1] = Math.round(cy + dy / dx * (po[0] - cx));
 	po[0] += 3;
 	po[1] += (0 <= a ? -5 : 14);
     } else if (pi4 <= a && a < (3 * pi4)) { // bottom
 	po[1] = g.top + g.height;
-	po[0] = Math.round(cx + dx / dy * (po[1]-cy));
+	po[0] = Math.round(cx + dx / dy * (po[1] - cy));
 	po[1] += 14;
-	po[0] += (Math.PI / 2 > a ? -nw-3 : 3);
-    } else if (-pi4 >= a && a > (-3 * pi4)) { // top
+	po[0] += (Math.PI / 2 > a ? -nw - 3 : 3);
+    } else if ( - pi4 >= a && a > ( - 3 * pi4)) { // top
 	po[1] = g.top;
-	po[0] = Math.round(cx + dx / dy * (po[1]-cy));
+	po[0] = Math.round(cx + dx / dy * (po[1] - cy));
 	po[1] -= 3;
-	po[0] += (-Math.PI / 2 < a ? -nw-3 : 3);
-    } else if (3 * pi4 <= a || a < (-3 * pi4)) { // left
+	po[0] += ( - Math.PI / 2 < a ? -nw - 3 : 3);
+    } else if (3 * pi4 <= a || a < ( - 3 * pi4)) { // left
 	po[0] = g.left;
-	po[1] = Math.round(cy + dy / dx * (po[0]-cx));
+	po[1] = Math.round(cy + dy / dx * (po[0] - cx));
 	po[0] -= 3 + nw;
 	po[1] += (0 <= a ? -5 : 14);
     }
@@ -287,34 +291,30 @@ function labelPt(p,g,nw) {
 
 function drawArrow(p,g,ctx) {
     var cx = g.left + g.width / 2.0, cy = g.top + g.height / 2.0;
-    var dx = p[0]-cx, dy = p[1]-cy;
+    var dx = p[0] - cx, dy = p[1] - cy;
     var ura = Math.atan2(cy - g.top, cx - g.left);
     var px = 0, py = 0;
     var a = Math.atan2(dy,dx);
 
-    if (-ura <= a && a < ura) { // right side
+    if ( - ura <= a && a < ura) { // right side
 	px = g.left + g.width;
-	py = Math.round(cy + dy / dx * (px-cx));
+	py = Math.round(cy + dy / dx * (px - cx));
     } else if (ura <= a && a < Math.PI - ura) { // bottom
 	py = g.top + g.height;
-	px = Math.round(cx + dx / dy * (py-cy));
-    } else if (-ura >= a && a > -Math.PI + ura) { // top
+	px = Math.round(cx + dx / dy * (py - cy));
+    } else if ( - ura >= a && a > -Math.PI + ura) { // top
 	py = g.top;
-	px = Math.round(cx + dx / dy * (py-cy));
+	px = Math.round(cx + dx / dy * (py - cy));
     } else if (Math.PI - ura <= a || a < Math.PI + ura) { // left
 	px = g.left;
-	py = Math.round(cy + dy / dx * (px-cx));
+	py = Math.round(cy + dy / dx * (px - cx));
     }
     ctx.beginPath();
     ctx.moveTo(px, py);
-    ctx.arc(px, py, 16, a-0.4, a + 0.4);
+    ctx.arc(px, py, 16, a - 0.4, a + 0.4);
     ctx.lineTo(px, py);
     ctx.closePath();
     ctx.fill();
-}
-
-function showScale() {
-    document.getElementById('scales').classList.toggle('show');
 }
 
 function pickScale(s) {
@@ -328,10 +328,11 @@ function pickScale(s) {
 	menu.classList.remove('show');
     }
 }
+
 function updateDims() {
     if (null == dflow) {
-	dwidth = 1000
-	dheight = 1000
+	dwidth = 1000;
+	dheight = 1000;
 	return;
     }
     dwidth = 100; // minimum
@@ -410,32 +411,11 @@ function flownameMod() {
 	dflow.id = e.value;
 	if (true != dflow.changed) {
 	    dflow.changed = true;
-	    document.getElementById("titlelabel").innerHTML = " * Title:";
+	    document.getElementById("titlelabel").innerHTML = "*Title:";
 	}
     }
 }
-function openFlow() {
-    document.getElementById('opentool').value = '';
-    document.getElementById('opentool').click();
-}
-function openInput() {
-    var f = document.getElementById('opentool').files[0];
 
-    if (f) {
-	var r = new FileReader();
-	r.onload = function(e) {
-	    setFlow(e.target.result, f.name);
-	};
-	r.onerror = function(e) {
-	    alert("error reading " + f.name);
-	};
-	r.readAsText(f, 'UTF-8');
-    }
-}
-function saveFlow() {
-    document.getElementById('savebut').className = 'tool-down';
-    document.getElementById('savebut').className = 'tool';
-}
 function snapTog() {
     var e = document.getElementById('snapbut');
 
@@ -446,13 +426,17 @@ function snapTog() {
     }
     e.className = (snapTo ? 'tool-down' : 'tool');
 }
+
 var tools = ['ptr','rect','link'];
 function toolPick(tool) {
+    if (unSelect()) {
+        drawDiagram();
+    }
     if ('tool-off' === document.getElementById(tool + 'but').className) {
 	return;
     }
     activeTool = tool;
-    for (var i=tools.length-1; 0<=i; i--) {
+    for (var i=tools.length - 1; 0<=i; i--) {
 	if (tool == tools[i]) {
 	    document.getElementById(tools[i] + 'but').className = 'tool-down';
 	} else {

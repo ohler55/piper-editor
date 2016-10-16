@@ -18,9 +18,11 @@ var dheight = 1000
 var dflow = null
 
 function unSelect() {
+    var changed = (null != selTask);
     selTask = null;
     selBut = 0;
     selLink = null;
     selLinkName = '';
     selLinkPath = [];
+    return changed;
 }

@@ -17,9 +17,9 @@ function actorChanged() {
 	document.getElementById('link_props').style.display = 'block';
 	return;
     }
-    var t=selTask;
+    var t = selTask;
     document.getElementById('task_props').style.display = 'block';
-    var a = document.getElementById("actor");
+    var a = document.getElementById('actor');
     if (undefined == a) {
 	return;
     } else if ('nats_publish' === a.value) {
@@ -61,14 +61,14 @@ function pathToJson(path){
     if (undefined != path){
 	j += '[';
 	var p,plen = path.length;
-	for (var i=0; i<plen; i++) {
+	for (var i = 0; i < plen; i++) {
 	    p = path[i]
-	    if (0<i){
+	    if (0 < i){
 		j += ',';
 	    }
-	    j += '\n  ['+p[0]+','+p[1]+']';
+	    j += '\n  [' + p[0] + ',' + p[1] + ']';
 	}
-	if (0<plen){
+	if (0 < plen){
 	    j += '\n';
 	}
 	j += ']';
@@ -78,23 +78,23 @@ function pathToJson(path){
 
 function updateProps(){
     if (null == selTask){
-	document.getElementById("propname").value = "";
-	document.getElementById("actor").value = "";
-	document.getElementById("top").value = "";
-	document.getElementById("left").value = "";
-	document.getElementById("height").value = "";
-	document.getElementById("width").value = "";
-	document.getElementById("color").value = "";
-	document.getElementById("trace").checked = false;
-	document.getElementById("linkname").value = "";
+	document.getElementById('propname').value = '';
+	document.getElementById('actor').value = '';
+	document.getElementById('top').value = '';
+	document.getElementById('left').value = '';
+	document.getElementById('height').value = '';
+	document.getElementById('width').value = '';
+	document.getElementById('color').value = '';
+	document.getElementById('trace').checked = false;
+	document.getElementById('linkname').value = '';
 	document.getElementById('task_props').style.display = 'none';
 	document.getElementById('link_props').style.display = 'none';
     } else if (null == selLink){
 	var t=selTask;
 	document.getElementById('task_props').style.display = 'block';
 	document.getElementById('link_props').style.display = 'none';
-	document.getElementById("propname").value = t.name;
-	document.getElementById("actor").value = t.actor;
+	document.getElementById('propname').value = t.name;
+	document.getElementById('actor').value = t.actor;
 	var g = t.graphic;
 	var c = '#ffffff';
 	
@@ -103,13 +103,13 @@ function updateProps(){
 	} else if ('number' === typeof g.color) {
 	    c ='#'+(0x1000000 + g.color).toString(16).substr(1);
 	}
-	document.getElementById("top").value = g.top;
-	document.getElementById("left").value = g.left;
-	document.getElementById("height").value = g.height;
-	document.getElementById("width").value = g.width;
-	document.getElementById("color").value = c;
-	document.getElementById("trace").checked = t.trace;
-	document.getElementById("linkname").value = "";
+	document.getElementById('top').value = g.top;
+	document.getElementById('left').value = g.left;
+	document.getElementById('height').value = g.height;
+	document.getElementById('width').value = g.width;
+	document.getElementById('color').value = c;
+	document.getElementById('trace').checked = t.trace;
+	document.getElementById('linkname').value = '';
     } else {
 	document.getElementById('task_props').style.display = 'none';
 	document.getElementById('link_props').style.display = 'block';
@@ -124,11 +124,11 @@ function updateProps(){
     actorChanged();
 }
 
-function flowChanged(){
+function flowChanged() {
     if (null != dflow) {
 	if (true != dflow.changed) {
 	    dflow.changed = true;
-	    document.getElementById("titlelabel").innerHTML = "*Title:";
+	    document.getElementById('titlelabel').innerHTML = '*Title:';
 	}
 	drawDiagram();
     }
@@ -151,7 +151,7 @@ function actorReset(t){
 }
 
 function actorMod(){
-    var a = document.getElementById("actor");
+    var a = document.getElementById('actor');
     
     if (null == selTask) {
 	a.value = '';
@@ -165,7 +165,7 @@ function actorMod(){
     } else if ('join' === a.value) {
 	actorReset(t)
 	t.count = 1;
-	t.box_resolve = "merge";
+	t.box_resolve = 'merge';
 	t.actor = a.value;
     } else if ('switch' === a.value) {
 	actorReset(t)
@@ -408,7 +408,7 @@ function removeTaskUp(){
 	if (undefined == t2.links || null == t2.links) {
 	    return;
 	}
-	Object.keys(t2.links).forEach(function(lk,j) {
+	Object.keys(t2.links).forEach(function(lk, j) {
 	    var link = t2.links[lk];
 	    if (selTask.name == link.target) {
 		delete t2.links[lk];
@@ -433,6 +433,7 @@ function linknameMod(){
 	flowChanged();
     }
 }
+
 function linkpathMod(){
     if (null != selTask && null != selLink) {
 	var s = document.getElementById('linkpath').value;
@@ -460,6 +461,7 @@ function linkpathMod(){
 	}
     }
 }
+
 function targetMod(){
     if (null != selTask && null != selLink) {
 	var target = document.getElementById('target').value;
@@ -476,6 +478,7 @@ function targetMod(){
 function removeLinkDown(){
     document.getElementById('removelink').className = 'removebutton-down';
 }
+
 function removeLinkLeave(){
     document.getElementById('removelink').className = 'removebutton';
 }

@@ -10,15 +10,18 @@
     <table class="header">
       <tr>
 	<td class="name">
-	  <img src="logo.gif" class="logo" height="46" width="59" style="padding-top: 6px">
+	  <a href="http://piperpushcache.com" class="normal"><img src="logo.gif" class="logo" height="46" width="59" style="padding-top: 6px"></a>
 	  <a href="http://piperpushcache.com" class="normal">Piper Push Cache</a><span class="normal"> Flow Editor</span></td>
 	<td>&nbsp;</td>
       </tr>
     </table>
     <div class="tools">
-      <img id="openbut" class="tool" src="open.gif" onclick="openFlow()">
-      <img id="savebut" class="tool-off" src="save.gif" onclick="saveFlow()">
+      <img id="openbut" class="tool" src="open.gif">
+      <img class="sep" src="div.jpg">
+      <img id="savebut" class="tool-off" src="save.gif">
+      <img class="sep" src="div.jpg">
       <img id="snapbut" class="tool-off" src="snap.gif">
+      <img class="sep" src="div.jpg">
       <img id="ptrbut" class="tool-off" src="pointer.gif">
       <img id="rectbut" class="tool-off" src="rectangle.gif">
       <img id="linkbut" class="tool-off" src="link.gif">
@@ -154,7 +157,7 @@
 	</div>
       </div>
       <div id="foot" class="footer">
-	<img class="showhide" src="showhide.gif" onclick="showhide()">
+	<img id="showhide_flist" class="showhide-off" src="showhide.gif">
 	&nbsp;
 	<div class="scaledrop">
 	  <button id="scalebutton" class="dropbutton" onclick="showScale()"><span id="scalevalue">100</span>% <img class="updown" src="updown.gif"></button>
@@ -167,7 +170,7 @@
 	  </div>
 	</div>
 	<span id="debug" class="debug"></span>
-	<img class="showhide" style="position:relative;float:right;" src="showhide.gif" onclick="showhideprops()">
+	<img id="showhide_props" class="showhide" style="position:relative;float:right;" src="showhide.gif">
       </div>
     </div>
 

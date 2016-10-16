@@ -19,22 +19,22 @@ function resizeWork() {
     var fs = document.getElementById("fshell");
     var p = document.getElementById("props");
 
-    ds.style.left = fl.clientWidth+fl.clientLeft+18;
-    p.style.left = work.clientWidth-p.clientWidth-2;
+    ds.style.left = fl.clientWidth + fl.clientLeft + 18;
+    p.style.left = work.clientWidth - p.clientWidth - 2;
 
-    var h = work.clientHeight-ds.offsetTop+work.clientTop;
-    var w = work.clientWidth-ds.offsetLeft+work.clientLeft-p.clientWidth-2;
+    var h = work.clientHeight - ds.offsetTop+work.clientTop;
+    var w = work.clientWidth - ds.offsetLeft+work.clientLeft - p.clientWidth - 2;
 
     fs.style.height = h - 2;
     f.style.top = h - 11;
-    f.style.left = fs.clientLeft+fs.clientWidth;
-    f.style.width = ds.clientWidth-fs.clientWidth-55;
-    f.style.width = w+18;
-    vr.height = h-28;
-    vr.style.left = fl.clientWidth+fl.clientLeft+1;
+    f.style.left = fs.clientLeft + fs.clientWidth;
+    f.style.width = ds.clientWidth - fs.clientWidth - 55;
+    f.style.width = w + 18;
+    vr.height = h - 28;
+    vr.style.left = fl.clientWidth + fl.clientLeft + 1;
     hr.width = w;
-    hr.style.left = fl.clientWidth+fl.clientLeft+17;
-    ds.style.left = fl.clientWidth+fl.clientLeft+18;
+    hr.style.left = fl.clientWidth + fl.clientLeft + 17;
+    ds.style.left = fl.clientWidth + fl.clientLeft + 18;
     ds.style.top = 17;
     ds.style.height = h - 28;
     ds.style.width = w;
@@ -44,14 +44,16 @@ function resizeWork() {
 }
 
 function showhide() {
-    var fl = document.getElementById("flist");
+    if (0 < loadedFlows.length) {
+        var fl = document.getElementById("flist");
 
-    if (0 < fl.clientWidth) {
-	fl.style.width = 0;
-    } else {
-	fl.style.width = 200;
+        if (0 < fl.clientWidth) {
+	    fl.style.width = 0;
+        } else {
+	    fl.style.width = 200;
+        }
+        resizeWork();
     }
-    resizeWork();
 }
 
 function showhideprops() {
@@ -64,5 +66,8 @@ function showhideprops() {
     }
     resizeWork();
 }
+
+document.getElementById('showhide_flist').onclick = showhide;
+document.getElementById('showhide_props').onclick = showhideprops;
 
 resizeWork();
