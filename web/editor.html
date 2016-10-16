@@ -19,13 +19,14 @@
       <img id="openbut" class="tool" src="open.gif">
       <img class="sep" src="div.jpg">
       <img id="savebut" class="tool-off" src="save.gif">
-      <img class="sep" src="div.jpg">
+      <img class="sep" src="div.jpg" style="width: 4px">
       <img id="snapbut" class="tool-off" src="snap.gif">
       <img class="sep" src="div.jpg">
       <img id="ptrbut" class="tool-off" src="pointer.gif">
       <img id="rectbut" class="tool-off" src="rectangle.gif">
       <img id="linkbut" class="tool-off" src="link.gif">
-      <img class="sep" src="div.jpg">
+      <img class="sep" src="div.jpg" style="width: 4px">
+      <img id="tracebut" class="tool-off" src="trace.gif">
       <span class="ftitle" id="titlelabel">Title:</span>
       <input id="flowname" class="flowname" type="text" value="" disabled="true"/>
     </div>
@@ -85,8 +86,18 @@
 	  <span class="propleftlabel">Color</span>
 	  <input id="color"class="propnum" style="width:120px" type="color" value=""/>
 
-	  <span class="propleftlabel">Trace</span>
-	  <input id="trace" type="checkbox" value=""/>
+	  <table class="proptable" style="width:100%; padding: 0px 10px">
+	    <tr>
+	      <td class="proptable" style="text-align:left">
+	        <span class="propleftlabel">Trace</span>
+	        <input id="trace" type="checkbox" value=""/>
+	      </td>
+	      <td class="proptable" style="text-align:left">
+	        <span class="propleftlabel">Entry</span>
+	        <input id="entry" type="checkbox" value=""/>
+	      </td>
+	    </tr>
+          </table>
 
 	  <div id="subject_prop" class="opt">
 	    <span class="proplabel">Subject</span>

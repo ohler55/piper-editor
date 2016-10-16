@@ -427,6 +427,17 @@ function snapTog() {
     e.className = (snapTo ? 'tool-down' : 'tool');
 }
 
+function traceFlowMod() {
+    var e = document.getElementById('tracebut');
+
+    if ('tool' === e.className) {
+	dflow.trace = true;
+    } else {
+	dflow.trace = false;
+    }
+    e.className = (dflow.trace ? 'tool-down' : 'tool');
+}
+
 var tools = ['ptr','rect','link'];
 function toolPick(tool) {
     if (unSelect()) {
@@ -458,3 +469,4 @@ document.getElementById('snapbut').onclick = snapTog;
 document.getElementById('ptrbut').onclick = function() {toolPick('ptr');}
 document.getElementById('rectbut').onclick = function() {toolPick('rect');}
 document.getElementById('linkbut').onclick = function() {toolPick('link');}
+document.getElementById('tracebut').onclick = traceFlowMod;

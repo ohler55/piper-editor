@@ -55,6 +55,7 @@ function setJsonFlow(flow) {
     document.getElementById('ptrbut').className = 'tool-down';
     document.getElementById('rectbut').className = 'tool';
     document.getElementById('linkbut').className = 'tool';
+    document.getElementById('tracebut').className = (dflow.trace ? 'tool-down' : 'tool');
     document.getElementById("titlelabel").innerHTML = "Title:";
 }
 
@@ -157,6 +158,7 @@ function saveFlow() {
     if (null != dflow) {
         document.getElementById('savebut').className = 'tool-down';
         var a = document.getElementById("save_a");
+        delete dflow.changed;
         var b = new Blob([JSON.stringify(dflow, null, '  ')], {type: 'application/json'});
         a.href = URL.createObjectURL(b);
         if (dflow.id.endsWith('.json') || dflow.id.endsWith('.flow')) {
@@ -178,3 +180,6 @@ document.getElementById('diagram').onmouseout = flowOut;
 
 document.getElementById('openbut').onclick = openFlow;
 document.getElementById('savebut').onclick = saveFlow;
+
+// An empty flow at the start instead of null.
+setJsonFlow({'kind': '_Flow', 'id': 'untitled', 'trace': false, 'entry':'', 'tasks':{}})

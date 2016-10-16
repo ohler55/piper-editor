@@ -15,7 +15,7 @@ var snapTo = true
 var dscale = 1.0
 var dwidth = 1000
 var dheight = 1000
-var dflow = null
+var dflow = null;
 
 function unSelect() {
     var changed = (null != selTask);

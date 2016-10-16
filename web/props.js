@@ -86,6 +86,7 @@ function updateProps(){
 	document.getElementById('width').value = '';
 	document.getElementById('color').value = '';
 	document.getElementById('trace').checked = false;
+	document.getElementById('entry').checked = false;
 	document.getElementById('linkname').value = '';
 	document.getElementById('task_props').style.display = 'none';
 	document.getElementById('link_props').style.display = 'none';
@@ -109,6 +110,7 @@ function updateProps(){
 	document.getElementById('width').value = g.width;
 	document.getElementById('color').value = c;
 	document.getElementById('trace').checked = t.trace;
+	document.getElementById('entry').checked = (selTask.name == dflow.entry);
 	document.getElementById('linkname').value = '';
     } else {
 	document.getElementById('task_props').style.display = 'none';
@@ -267,9 +269,22 @@ function colorMod(){
 	flowChanged();
     }
 }
+
 function traceMod(){
     if (null != selTask) {
 	selTask.trace = document.getElementById('trace').checked;
+	flowChanged();
+    }
+}
+
+function entryMod(){
+    if (null != selTask) {
+        if (document.getElementById('entry').checked) {
+	    dflow.entry = selTask.name;
+        } else {
+            // Allow for since flows with trigger tasks have no entry.
+            dflow.entry = '';
+        }
 	flowChanged();
     }
 }
@@ -504,6 +519,7 @@ document.getElementById('width').onchange=widthMod;
 document.getElementById('height').onchange=heightMod;
 document.getElementById('color').onchange=colorMod;
 document.getElementById('trace').onchange=traceMod;
+document.getElementById('entry').onchange=entryMod;
 
 document.getElementById('subject').onchange=subjectMod;
 document.getElementById('count').onchange=countMod;
