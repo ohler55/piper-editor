@@ -154,8 +154,19 @@ function openInput() {
 }
 
 function saveFlow() {
-    document.getElementById('savebut').className = 'tool-down';
-    document.getElementById('savebut').className = 'tool';
+    if (null != dflow) {
+        document.getElementById('savebut').className = 'tool-down';
+        var a = document.getElementById("save_a");
+        var b = new Blob([JSON.stringify(dflow, null, '  ')], {type: 'application/json'});
+        a.href = URL.createObjectURL(b);
+        if (dflow.id.endsWith('.json') || dflow.id.endsWith('.flow')) {
+            a.download = dflow.id;
+        } else {
+            a.download = dflow.id + '.flow';
+        }
+        a.click();
+        document.getElementById('savebut').className = 'tool';
+    }
 }
 
 document.getElementById('diagram').ondblclick = flowDblClick;
