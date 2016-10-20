@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wW1
+#!/usr/bin/env ruby
 # encoding: UTF-8
 
 def compact(src, dest)
@@ -103,7 +103,6 @@ def compact_js_line(line)
 end
 
 def compact_html(src, dest)
-  cnt = 0
   sf = File.new(src)
   df = File.open(dest, 'w')
   sf.each_line do |line|
